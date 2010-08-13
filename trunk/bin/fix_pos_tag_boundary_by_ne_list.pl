@@ -39,7 +39,7 @@ sub get_NE_area {
 sub debug_NE_area {
   my ($start_arr_ref, $end_arr_ref, $arr_count) = @_;
   for (my $i = 0; $i <= $arr_count; $i++) {
-      print("[NE area $i] : ".$start_arr_ref->[$i]."<-->".$end_arr_ref->[$i]."¥n");
+      print("[NE area $i] : ".$start_arr_ref->[$i]."<-->".$end_arr_ref->[$i]."促n");
   }
   return;
 }
@@ -59,7 +59,7 @@ sub get_POS_token {
     my $cost = $n->{cost};
      
     $surface = Encode::decode_utf8($surface) unless utf8::is_utf8($surface);
-    my @feature_arr = split /¥,/, $tmp_feature;
+    my @feature_arr = split /促,/, $tmp_feature;
     my @tmp_feature_arr = ();
     push @tmp_feature_arr, $tmp_feature;
     push @tmp_feature_arr, $feature_arr[0];
@@ -68,7 +68,7 @@ sub get_POS_token {
     push @tmp_feature_arr, $feature_arr[1].",".$feature_arr[2];
     push @tmp_feature_arr, $feature_arr[0].",".$feature_arr[1].",".$feature_arr[2];
  
-    my $feature = join "¥t", @tmp_feature_arr;
+    my $feature = join "促t", @tmp_feature_arr;
 
     while ($surface ne "") {
       my $surface_len = length $surface;
@@ -84,7 +84,7 @@ sub get_POS_token {
           my $tmp_surface = substr($surface, 0, $endpoint);
           push @{$token_len_arr_ref}, length $tmp_surface;
           $tmp_surface = Encode::encode_utf8($tmp_surface) if utf8::is_utf8($tmp_surface);
-          push @{$token_arr_ref}, "$tmp_surface¥t$feature¥t$cost";
+          push @{$token_arr_ref}, "$tmp_surface\t$feature\t$cost";
           $token_count++;
           $total_count = $total_count - ($surface_len - $endpoint);
           $surface = substr($surface, $endpoint, $surface_len);
@@ -94,7 +94,7 @@ sub get_POS_token {
           my $tmp_surface = substr($surface, 0, $endpoint);
           push @{$token_len_arr_ref}, length $tmp_surface;
           $tmp_surface = Encode::encode_utf8($tmp_surface) if utf8::is_utf8($tmp_surface);
-          push @{$token_arr_ref}, "$tmp_surface¥t$feature¥t$cost";
+          push @{$token_arr_ref}, "$tmp_surface\t$feature\t$cost";
           $token_count++;
           $total_count = $total_count - ($surface_len - $endpoint);
           $surface = substr($surface, $endpoint, $surface_len);
@@ -105,7 +105,7 @@ sub get_POS_token {
           my $tmp_surface = substr($surface, 0, $endpoint);
           push @{$token_len_arr_ref}, length $tmp_surface;
           $tmp_surface = Encode::encode_utf8($tmp_surface) if utf8::is_utf8($tmp_surface);
-          push @{$token_arr_ref}, "$tmp_surface¥t$feature¥t$cost";
+          push @{$token_arr_ref}, "$tmp_surface\t$feature\t$cost";
           $token_count++;
           $total_count = $total_count - $endpoint;
           $surface = substr($surface, $endpoint, $surface_len);
@@ -116,7 +116,7 @@ sub get_POS_token {
         }
           push @{$token_len_arr_ref}, length $surface;
             $surface = Encode::encode_utf8($surface) if utf8::is_utf8($surface);
-          push @{$token_arr_ref}, "$surface¥t$feature¥t$cost";
+          push @{$token_arr_ref}, "$surface\t$feature\t$cost";
           $token_count++;
           last;
         }
@@ -124,7 +124,7 @@ sub get_POS_token {
       eles {
         push @{$token_len_arr_ref}, length $surface;
         $surface = Encode::encode_utf8($surface) if utf8::is_utf8($surface);
-        push @{$token_arr_ref}, "$surface¥t$feature¥t$cost";
+        push @{$token_arr_ref}, "$surface\t$feature\t$cost";
         $token_count++;
         last;
       }
@@ -189,7 +189,7 @@ sub fetch {
     my $l = "";
     my $l_len = &normalize_text(\$l, $buf);
     my $ne_area_num = &get_NE_area(\@start_arr, \@end_arr, $l, $l_len, $td);
-    #&debug_NE_area(¥@start_arr, ¥@end_arr, $ne_area_num);
+    #&debug_NE_area(\@start_arr, \@end_arr, $ne_area_num);
     my @token_arr = ();
     my @token_len_arr = ();
     my $token_num = &get_POS_token(\@token_arr, \@token_len_arr, $l, $l_len, \@start_arr, \@end_arr, $ne_area_num, $mecab);
@@ -198,10 +198,10 @@ sub fetch {
     my $token_len = 0;
     for (my $i = 0; $i < $token_num; $i++) {
       # print $i." : ".$token_len." : ";
-      print $token_arr[$i]."¥t".$tag_arr[$i]."¥n";
+      print $token_arr[$i]."\t".$tag_arr[$i]."\n";
       $token_len += $token_len_arr[$i];
   }
-    print ("========¥n");
+    print ("========\n");
 } 
   close($in);
   return;
